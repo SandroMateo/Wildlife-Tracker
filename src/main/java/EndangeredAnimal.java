@@ -44,9 +44,10 @@ public class EndangeredAnimal extends Animal {
   public void updateHealth(String health) {
     this.health = health;
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE animals SET health = :health";
+      String sql = "UPDATE animals SET health = :health WHERE id = :id";
       con.createQuery(sql)
         .addParameter("health", health)
+        .addParameter("id", this.id)
         .executeUpdate();
     }
   }
@@ -54,9 +55,10 @@ public class EndangeredAnimal extends Animal {
   public void updateAge(String age) {
     this.age = age;
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE animals SET age = :age";
+      String sql = "UPDATE animals SET age = :age WHERE id = :id";
       con.createQuery(sql)
         .addParameter("age", age)
+        .addParameter("id", this.id)
         .executeUpdate();
     }
   }

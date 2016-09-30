@@ -28,21 +28,22 @@ public class Animal {
     }
   }
 
-  // public List<Sightings> getSightings() {
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "SELECT * FROM sightings WHERE animalid = :id";
-  //     return con.createQuery(sql)
-  //       .addParameter("id", this.id)
-  //       .executeAndFetch(Sighting.class);
-  //   }
-  // }
+  public List<Sighting> getSightings() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM sightings WHERE animalid = :id";
+      return con.createQuery(sql)
+        .addParameter("id", this.id)
+        .executeAndFetch(Sighting.class);
+    }
+  }
 
   public void updateName(String name) {
     this.name = name;
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE animals SET name = :name";
+      String sql = "UPDATE animals SET name = :name WHERE id = :id";
       con.createQuery(sql)
         .addParameter("name", name)
+        .addParameter("id", this.id)
         .executeUpdate();
     }
   }
