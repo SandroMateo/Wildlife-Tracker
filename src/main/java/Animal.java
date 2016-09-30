@@ -79,6 +79,7 @@ public class Animal {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM animals";
       return con.createQuery(sql)
+        .throwOnMappingFailure(false)
         .executeAndFetch(Animal.class);
     }
   }
