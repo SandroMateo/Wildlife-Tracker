@@ -56,7 +56,7 @@ public class Animal {
     }
   }
 
-  public static List<Animal> all() {
+  public static List<Animal> allAnimals() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM animals";
       return con.createQuery(sql)
@@ -64,7 +64,7 @@ public class Animal {
     }
   }
 
-  public static Animal find(int id) {
+  public static Animal findAnimals(int id) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM animals WHERE id = :id";
       return con.createQuery(sql)
@@ -74,7 +74,7 @@ public class Animal {
     }
   }
 
-  public static List<Animal> search(String name) {
+  public static List<Animal> searchAnimals(String name) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM animals WHERE name LIKE :name";
       return con.createQuery(sql)

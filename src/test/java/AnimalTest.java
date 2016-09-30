@@ -46,26 +46,26 @@ public class AnimalTest {
   // }
 
   @Test
-  public void all_returnsAllInstancesOfAnimal_true() {
+  public void allAnimals_returnsAllInstancesOfAnimal_true() {
     firstAnimal.save();
     secondAnimal.save();
-    assertTrue(Animal.all().get(0).equals(firstAnimal));
-    assertTrue(Animal.all().get(1).equals(secondAnimal));
+    assertTrue(Animal.allAnimals().get(0).equals(firstAnimal));
+    assertTrue(Animal.allAnimals().get(1).equals(secondAnimal));
   }
 
   @Test
-  public void find_returnsAnimalWithSameId_secondAnimal() {
+  public void findAnimals_returnsAnimalWithSameId_secondAnimal() {
     firstAnimal.save();
     secondAnimal.save();
-    assertEquals(Animal.find(secondAnimal.getId()), secondAnimal);
+    assertEquals(Animal.findAnimals(secondAnimal.getId()), secondAnimal);
   }
 
   @Test
-  public void search_returnAnimalListWithSearchedString_true() {
+  public void searchAnimals_returnAnimalListWithSearchedString_true() {
     firstAnimal.save();
     secondAnimal.save();
-    assertTrue(Animal.search("B").contains(firstAnimal));
-    assertTrue(Animal.search("B").contains(secondAnimal));
+    assertTrue(Animal.searchAnimals("B").contains(firstAnimal));
+    assertTrue(Animal.searchAnimals("B").contains(secondAnimal));
   }
 
   @Test
@@ -77,13 +77,13 @@ public class AnimalTest {
   @Test
   public void save_returnsTrueIfNamesAreTheSame() {
     firstAnimal.save();
-    assertTrue(Animal.all().get(0).equals(firstAnimal));
+    assertTrue(Animal.allAnimals().get(0).equals(firstAnimal));
   }
 
   @Test
   public void save_assignsIdToObject() {
     firstAnimal.save();
-    Animal savedAnimal = Animal.all().get(0);
+    Animal savedAnimal = Animal.allAnimals().get(0);
     assertEquals(firstAnimal.getId(), savedAnimal.getId());
   }
 
@@ -91,7 +91,7 @@ public class AnimalTest {
   public void updateName_updatesAnimalName_true() {
     firstAnimal.save();
     firstAnimal.updateName("Fox");
-    assertEquals("Fox", Animal.find(firstAnimal.getId()).getName());
+    assertEquals("Fox", Animal.findAnimals(firstAnimal.getId()).getName());
   }
 
   @Test
@@ -99,6 +99,6 @@ public class AnimalTest {
     firstAnimal.save();
     int firstAnimalId = firstAnimal.getId();
     firstAnimal.delete();
-    assertEquals(null, Animal.find(firstAnimalId));
+    assertEquals(null, Animal.findAnimals(firstAnimalId));
   }
 }
