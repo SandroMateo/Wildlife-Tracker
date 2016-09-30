@@ -14,8 +14,8 @@ public class SightingTest {
 
   @Before
   public void initialize() {
-    firstSighting = new Sighting(Sighting.LOCATION_ZONEA, "Sandro", 1);
-    secondSighting = new Sighting(Sighting.LOCATION_NE, "Gabe", 1);
+    firstSighting = new Sighting(Sighting.LOCATION_ZONEA, 1, 1);
+    secondSighting = new Sighting(Sighting.LOCATION_NE, 2, 1);
   }
 
   @Rule
@@ -32,8 +32,8 @@ public class SightingTest {
   }
 
   @Test
-  public void getRangerName_returnsRangerName_String() {
-    assertEquals("Sandro", firstSighting.getRangerName());
+  public void getRangerId_returnsRangerId_int() {
+    assertEquals(1, firstSighting.getRangerId());
   }
 
   @Test
@@ -44,7 +44,7 @@ public class SightingTest {
   }
 
   @Test
-  public void getAnimalId_returnsAnimalId_String() {
+  public void getAnimalId_returnsAnimalId_int() {
     assertEquals(1, firstSighting.getAnimalId());
   }
 
@@ -71,7 +71,7 @@ public class SightingTest {
 
   @Test
   public void equals_returnsTrueIfSightingsAreTheSame() {
-    Sighting mySighting = new Sighting(Sighting.LOCATION_ZONEA, "Sandro", 1);
+    Sighting mySighting = new Sighting(Sighting.LOCATION_ZONEA, 1, 1);
     assertTrue(firstSighting.equals(mySighting));
   }
 

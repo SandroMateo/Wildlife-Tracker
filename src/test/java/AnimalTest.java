@@ -11,8 +11,8 @@ public class AnimalTest {
 
   @Before
   public void initialize() {
-    firstAnimal = new Animal("Bird");
-    secondAnimal = new Animal("Bear");
+    firstAnimal = new Animal("Bird", "flying");
+    secondAnimal = new Animal("Bear", "eating");
   }
 
   @Rule
@@ -29,21 +29,26 @@ public class AnimalTest {
   }
 
   @Test
+  public void getDescription_returnsDescription_String() {
+    assertEquals("flying", firstAnimal.getDescription());
+  }
+
+  @Test
   public void getId_returnsId_true() {
     firstAnimal.save();
     assertTrue(firstAnimal.getId() > 0);
   }
 
-  // @Test
-  // public void getSightings_returnListOfSightings_True() {
-  //   firstAnimal.save();
-  //   Sighting firstSighting = new Sighting( firstAnimal.getId());
-  //   firstSighting.save();
-  //   Sighting secondSighting = new Sighting( firstAnimal.getId());
-  //   secondSighting.save();
-  //   assertTrue(firstAnimal.getSightings().contains(firstSighting));
-  //   assertTrue(firstAnimal.getSightings().contains(secondSighting));
-  // }
+  @Test
+  public void getSightings_returnListOfSightings_True() {
+    firstAnimal.save();
+    Sighting firstSighting = new Sighting(Sighting.LOCATION_ZONEA, 1, firstAnimal.getId());
+    firstSighting.save();
+    Sighting secondSighting = new Sighting(Sighting.LOCATION_NE, 1, firstAnimal.getId());
+    secondSighting.save();
+    assertTrue(firstAnimal.getSightings().contains(firstSighting));
+    assertTrue(firstAnimal.getSightings().contains(secondSighting));
+  }
 
   @Test
   public void allAnimals_returnsAllInstancesOfAnimal_true() {
@@ -70,7 +75,7 @@ public class AnimalTest {
 
   @Test
   public void equals_returnsTrueIfNamesAreTheSame() {
-    Animal myAnimal = new Animal("Bird");
+    Animal myAnimal = new Animal("Bird", "flying");
     assertTrue(firstAnimal.equals(myAnimal));
   }
 
@@ -92,6 +97,13 @@ public class AnimalTest {
     firstAnimal.save();
     firstAnimal.updateName("Fox");
     assertEquals("Fox", Animal.findAnimals(firstAnimal.getId()).getName());
+  }
+
+  @Test
+  public void updateDescription_updatesAnimalDescription_true() {
+    firstAnimal.save();
+    firstAnimal.updateDescription("feathers");
+    assertEquals("feathers", Animal.findAnimals(firstAnimal.getId()).getDescription());
   }
 
   @Test

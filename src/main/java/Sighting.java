@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class Sighting {
   private Timestamp date;
   private String location;
-  private String rangerName;
+  private int rangerId;
   private int animalId;
   private int id;
 
@@ -17,9 +17,9 @@ public class Sighting {
   public static final String LOCATION_RIVER = "Near The River";
   public static final String LOCATION_NE = "NE Quadrant";
 
-  public Sighting(String location, String rangerName, int animalId) {
+  public Sighting(String location, int rangerId, int animalId) {
     this.location = location;
-    this.rangerName = rangerName;
+    this.rangerId = rangerId;
     this.animalId = animalId;
     this.date = new Timestamp(new Date().getTime());
   }
@@ -32,8 +32,8 @@ public class Sighting {
     return this.location;
   }
 
-  public String getRangerName() {
-    return this.rangerName;
+  public int getRangerId() {
+    return this.rangerId;
   }
 
   public int getAnimalId() {
@@ -46,11 +46,11 @@ public class Sighting {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO sightings (location, date, rangerName, animalId) VALUES (:location, :date, :rangerName, :animalId)";
+      String sql = "INSERT INTO sightings (location, date, rangerId, animalId) VALUES (:location, :date, :rangerId, :animalId)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("location", this.location)
         .addParameter("date", this.date)
-        .addParameter("rangerName", this.rangerName)
+        .addParameter("rangerId", this.rangerId)
         .addParameter("animalId", this.animalId)
         .executeUpdate()
         .getKey();
@@ -92,7 +92,7 @@ public class Sighting {
       Sighting newSighting = (Sighting) otherSighting;
       return this.getLocation().equals(newSighting.getLocation()) &&
       this.getDate().equals(newSighting.getDate()) &&
-      this.getRangerName().equals(newSighting.getRangerName()) &&
+      this.getRangerId() == (newSighting.getRangerId()) &&
       this.getAnimalId() == newSighting.getAnimalId() &&
       this.getId() == newSighting.getId();
     }

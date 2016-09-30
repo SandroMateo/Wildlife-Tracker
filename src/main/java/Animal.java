@@ -4,14 +4,20 @@ import java.util.ArrayList;
 
 public class Animal {
   public String name;
+  public String description;
   public int id;
 
-  public Animal(String name) {
+  public Animal(String name, String description) {
     this.name = name;
+    this.description = description;
   }
 
   public String getName() {
     return this.name;
+  }
+
+  public String getDescription() {
+    return this.description;
   }
 
   public int getId() {
@@ -20,9 +26,10 @@ public class Animal {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO animals (name) VALUES (:name)";
+      String sql = "INSERT INTO animals (name, description) VALUES (:name, :description)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("name", this.name)
+        .addParameter("description", this.description)
         .executeUpdate()
         .getKey();
     }
@@ -43,6 +50,17 @@ public class Animal {
       String sql = "UPDATE animals SET name = :name WHERE id = :id";
       con.createQuery(sql)
         .addParameter("name", name)
+        .addParameter("id", this.id)
+        .executeUpdate();
+    }
+  }
+
+  public void updateDescription(String description) {
+    this.description = description;
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE animals SET description = :description WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("description", description)
         .addParameter("id", this.id)
         .executeUpdate();
     }
@@ -90,7 +108,9 @@ public class Animal {
       return true;
     } else {
       Animal newAnimal = (Animal) otherAnimal;
-      return this.getName().equals(newAnimal.getName()) && this.getId() == newAnimal.getId();
+      return this.getName().equals(newAnimal.getName()) &&
+      this.getDescription().equals(newAnimal.getDescription()) &&
+      this.getId() == newAnimal.getId();
     }
   }
 }

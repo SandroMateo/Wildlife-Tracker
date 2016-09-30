@@ -11,8 +11,8 @@ public class EndangeredAnimalTest {
 
   @Before
   public void initialize() {
-    firstEndangeredAnimal = new EndangeredAnimal("Bird", "healthy", "young");
-    secondEndangeredAnimal = new EndangeredAnimal("Bear", "okay", "adult");
+    firstEndangeredAnimal = new EndangeredAnimal("Bird", "flying", "healthy", "young");
+    secondEndangeredAnimal = new EndangeredAnimal("Bear", "eating", "okay", "adult");
   }
 
   @Rule
@@ -44,16 +44,16 @@ public class EndangeredAnimalTest {
     assertTrue(firstEndangeredAnimal.getId() > 0);
   }
 
-  // @Test
-  // public void getSightings_returnListOfSightings_True() {
-  //   firstEndangeredAnimal.save();
-  //   Sighting firstSighting = new Sighting( firstEndangeredAnimal.getId());
-  //   firstSighting.save();
-  //   Sighting secondSighting = new Sighting( firstEndangeredAnimal.getId());
-  //   secondSighting.save();
-  //   assertTrue(firstEndangeredAnimal.getSightings().contains(firstSighting));
-  //   assertTrue(firstEndangeredAnimal.getSightings().contains(secondSighting));
-  // }
+  @Test
+  public void getSightings_returnListOfSightings_True() {
+    firstEndangeredAnimal.save();
+    Sighting firstSighting = new Sighting(Sighting.LOCATION_ZONEA, 1, firstEndangeredAnimal.getId());
+    firstSighting.save();
+    Sighting secondSighting = new Sighting(Sighting.LOCATION_NE, 1, firstEndangeredAnimal.getId());
+    secondSighting.save();
+    assertTrue(firstEndangeredAnimal.getSightings().contains(firstSighting));
+    assertTrue(firstEndangeredAnimal.getSightings().contains(secondSighting));
+  }
 
   @Test
   public void all_returnsAllInstancesOfEndangeredAnimal_true() {
@@ -80,7 +80,7 @@ public class EndangeredAnimalTest {
 
   @Test
   public void equals_returnsTrueIfNamesAreTheSame() {
-    EndangeredAnimal myEndangeredAnimal = new EndangeredAnimal("Bird", "healthy", "young");
+    EndangeredAnimal myEndangeredAnimal = new EndangeredAnimal("Bird", "flying", "healthy", "young");
     assertTrue(firstEndangeredAnimal.equals(myEndangeredAnimal));
   }
 
@@ -102,6 +102,13 @@ public class EndangeredAnimalTest {
     firstEndangeredAnimal.save();
     firstEndangeredAnimal.updateName("Fox");
     assertEquals("Fox", EndangeredAnimal.find(firstEndangeredAnimal.getId()).getName());
+  }
+
+  @Test
+  public void updateDescription_updatesEndangeredAnimalDescription_true() {
+    firstEndangeredAnimal.save();
+    firstEndangeredAnimal.updateDescription("feathers");
+    assertEquals("feathers", EndangeredAnimal.find(firstEndangeredAnimal.getId()).getDescription());
   }
 
   @Test
