@@ -1,6 +1,6 @@
 <h1>Environmental Impact Study For Douglas Forest</h1>
 
-<h4>Douglas Timber Company has proposed to clearcut areas of our beloved Douglas Forest. The Forest Service is responsible for completing an environmental impact study. This is where rangers track wildlife sighting in the area.</h4>
+<h4>Douglas Timber Company has proposed to clearcut areas of our beloved Douglas Forest. The Forest Service is responsible for completing an environmental impact study. This is where rangers track wildlife sightings in the area.</h4>
 
 <div class="row">
   <div class="col-sm-6">
@@ -42,12 +42,12 @@
     <h3>Report Sighting:</h3>
     <div class="form-group">
       <form action="/sighting/new" method="post">
-        <select name="animal" class="form-control">
+        <select name="animalId" class="form-control">
           #foreach($animal in $animals)
             <option value=$animal.getId()>$animal.getName()</option>
           #end
         </select>
-        <select class="form-control" name="endangeredAnimal">
+        <select class="form-control" name="endangeredAnimalId">
           #foreach($endangeredAnimal in $endangeredAnimals)
             <option value="$endangeredAnimal.getId()">$endangeredAnimal.getName()</option>
           #end

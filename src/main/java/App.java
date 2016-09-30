@@ -24,11 +24,21 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    // get("/", (request, response) -> {
-    //   Map<String, Object> = new HashMap<>();
-    //   model.put("template", "templates/index.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
+    post("/sighting/new", (request, response) -> {
+      Map<String, Object> = new HashMap<>();
+      if(Integer.parseInt(request.queryParams("animalId")) > 0) {
+        int animalId = Integer.parseInt(request.queryParams("animalId");
+      }
+      if (Integer.parseInt(request.queryParams("endangeredAnimalId") > 0) {
+        int animalId = Integer.parseInt(request.queryParams("endangeredAnimalId"));
+      }
+      int rangerId = request.session.attribute("rangerId");
+      String location = request.queryParams("location");
+      Sighting newSighting = new Sighting(location, rangerId, animalId);
+      newSighting.save();
+      model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
     //
     // get("/", (request, response) -> {
     //   Map<String, Object> = new HashMap<>();
