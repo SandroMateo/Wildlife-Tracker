@@ -137,11 +137,10 @@ public class Ranger {
     }
   }
 
-  public static Ranger login(String name, int badgeNumber, String password) {
+  public static Ranger login(int badgeNumber, String password) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM rangers WHERE name = :name AND badgenumber = :badgeNumber AND password = :password";
+      String sql = "SELECT * FROM rangers WHERE badgenumber = :badgeNumber AND password = :password";
       Ranger ranger =  con.createQuery(sql)
-        .addParameter("name", name)
         .addParameter("badgeNumber", badgeNumber)
         .addParameter("password", password)
         .executeAndFetchFirst(Ranger.class);
@@ -152,7 +151,7 @@ public class Ranger {
     }
   }
 
-  public static boolean checkLogin(String name, int badgeNumber, String password) {
+  public static boolean checkLogin(int badgeNumber, String password) {
     try {
       Ranger.login(name, badgeNumber, password);
     } catch (RuntimeException exception) {

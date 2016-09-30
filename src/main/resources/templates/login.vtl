@@ -1,0 +1,16 @@
+<form action="/login" method="post">
+  <div class="form-group">
+    #if($loggedIn == false)
+      <p>Invalid login info</p>
+    #end
+    <label for="badgeNumber">Badge Number</label>
+    <input type="number" name="badgeNumber" class="form-control" placeholder="badge #">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" name="password" class="form-control" placeholder="password">
+  </div>
+  <button type="submit" class="btn btn-success">Login</button>
+</form>
+
+<a href="/">Back To Home Page</a>

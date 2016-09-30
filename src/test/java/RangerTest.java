@@ -133,22 +133,22 @@ public class RangerTest {
   @Test
   public void login_successReturnsRanger_true() {
     firstRanger.save();
-    assertEquals(firstRanger, Ranger.login("Sandro", 1, "12345"));
+    assertEquals(firstRanger, Ranger.login(1, "12345"));
   }
 
   @Test(expected = RuntimeException.class)
   public void login_throwsExceptionIfLoginFails() {
     firstRanger.save();
-    assertEquals(firstRanger, Ranger.login("Sandro", 1, "qwerty"));
+    assertEquals(firstRanger, Ranger.login(1, "qwerty"));
   }
 
   @Test
   public void login_catchesExceptionIfLoginFails_false() {
     firstRanger.save();
     try {
-      Ranger myRanger = Ranger.login("Sandro", 1, "qwerty");
+      Ranger myRanger = Ranger.login(1, "qwerty");
     } catch(RuntimeException exception){ }
-      assertFalse(Ranger.checkLogin("Sandro", 1, "qwerty"));
+      assertFalse(Ranger.checkLogin(1, "qwerty"));
   }
 
   @Test
