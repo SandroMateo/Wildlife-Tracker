@@ -9,7 +9,6 @@ import java.util.Arrays;
 public class Ranger {
   private String name;
   private String password;
-  private int badgeNumber;
   private int id;
   private String contactInfo;
 
@@ -18,9 +17,8 @@ public class Ranger {
   public static final boolean LOGGEDIN_TRUE = true;
   public static final boolean LOGGEDIN_FALSE = false;
 
-  public Ranger(String name, int badgeNumber, String password, String contactInfo) {
+  public Ranger(String name, String password, String contactInfo) {
     this.name = name;
-    this.badgeNumber = badgeNumber;
     this.password = password;
     this.contactInfo = contactInfo;
     Ranger.loggedIn = Ranger.LOGGEDIN_TRUE;
@@ -32,10 +30,6 @@ public class Ranger {
 
   public String getPassword() {
     return this.password;
-  }
-
-  public int getBadgeNumber() {
-    return this.badgeNumber;
   }
 
   public String getContactInfo() {
@@ -52,10 +46,9 @@ public class Ranger {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO rangers (name, badgeNumber, password, contactInfo) VALUES (:name, :badgeNumber, :password, :contactInfo)";
+      String sql = "INSERT INTO rangers (name, password, contactInfo) VALUES (:name, :password, :contactInfo)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("name", this.name)
-        .addParameter("badgeNumber", this.badgeNumber)
         .addParameter("password", this.password)
         .addParameter("contactInfo", this.contactInfo)
         .executeUpdate()
@@ -88,16 +81,6 @@ public class Ranger {
       String sql = "UPDATE rangers SET password = :password";
       con.createQuery(sql)
         .addParameter("password", password)
-        .executeUpdate();
-    }
-  }
-
-  public void updateBadgeNumber(int badgeNumber) {
-    this.badgeNumber = badgeNumber;
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE rangers SET badgeNumber = :badgeNumber";
-      con.createQuery(sql)
-        .addParameter("badgeNumber", badgeNumber)
         .executeUpdate();
     }
   }
@@ -139,9 +122,9 @@ public class Ranger {
 
   public static Ranger login(int badgeNumber, String password) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM rangers WHERE badgenumber = :badgeNumber AND password = :password";
+      String sql = "SELECT * FROM rangers WHERE id = :id AND password = :password";
       Ranger ranger =  con.createQuery(sql)
-        .addParameter("badgeNumber", badgeNumber)
+        .addParameter("id", badgeNumber)
         .addParameter("password", password)
         .executeAndFetchFirst(Ranger.class);
       if(ranger == null) {
@@ -153,7 +136,7 @@ public class Ranger {
 
   public static boolean checkLogin(int badgeNumber, String password) {
     try {
-      Ranger.login(name, badgeNumber, password);
+      Ranger.login(badgeNumber, password);
     } catch (RuntimeException exception) {
       Ranger.loggedIn = Ranger.LOGGEDIN_FALSE;
       return Ranger.loggedIn;
@@ -180,7 +163,6 @@ public class Ranger {
       return this.getName().equals(newRanger.getName()) &&
       this.getPassword().equals(newRanger.getPassword()) &&
       this.getContactInfo().equals(newRanger.getContactInfo()) &&
-      this.getBadgeNumber() == newRanger.getBadgeNumber() &&
       this.getId() == newRanger.getId();
     }
   }

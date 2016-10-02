@@ -25,14 +25,14 @@ public class App {
     }, new VelocityTemplateEngine());
 
     post("/sighting/new", (request, response) -> {
-      Map<String, Object> = new HashMap<>();
+      Map<String, Object> model = new HashMap<>();
+      int animalId = 0;
       if(Integer.parseInt(request.queryParams("animalId")) > 0) {
-        int animalId = Integer.parseInt(request.queryParams("animalId");
+        animalId = Integer.parseInt(request.queryParams("animalId"));
+      } else {
+        animalId = Integer.parseInt(request.queryParams("endangeredAnimalId"));
       }
-      if (Integer.parseInt(request.queryParams("endangeredAnimalId") > 0) {
-        int animalId = Integer.parseInt(request.queryParams("endangeredAnimalId"));
-      }
-      int rangerId = request.session.attribute("rangerId");
+      int rangerId = request.session().attribute("rangerId");
       String location = request.queryParams("location");
       Sighting newSighting = new Sighting(location, rangerId, animalId);
       newSighting.save();
@@ -48,16 +48,17 @@ public class App {
     }, new VelocityTemplateEngine());
 
     get("/login", (request, response) -> {
-      Map<String, Object> = new HashMap<>();
+      Map<String, Object> model = new HashMap<>();
       model.put("template", "templates/login.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
     post("/login", (request, response) -> {
-      Map<String, Object> = new HashMap<>();
+      Map<String, Object> model = new HashMap<>();
       int badgeNumber = Integer.parseInt(request.queryParams("badgeNumber"));
       String password = request.queryParams("password");
       if(Ranger.checkLogin(badgeNumber, password)) {
+        request.session().attribute("rangerId", Ranger.login(badgeNumber, password).getId());
         model.put("rangers", Ranger.all());
         model.put("animals", Animal.allAnimals());
         model.put("zoneA", Sighting.LOCATION_ZONEA);
@@ -74,31 +75,31 @@ public class App {
     }, new VelocityTemplateEngine());
     //
     // get("/", (request, response) -> {
-    //   Map<String, Object> = new HashMap<>();
+    //   Map<String, Object> model = new HashMap<>();
     //   model.put("template", "templates/index.vtl");
     //   return new ModelAndView(model, layout);
     // }, new VelocityTemplateEngine());
     //
     // get("/", (request, response) -> {
-    //   Map<String, Object> = new HashMap<>();
+    //   Map<String, Object> model = new HashMap<>();
     //   model.put("template", "templates/index.vtl");
     //   return new ModelAndView(model, layout);
     // }, new VelocityTemplateEngine());
     //
     // get("/", (request, response) -> {
-    //   Map<String, Object> = new HashMap<>();
+    //   Map<String, Object> model = new HashMap<>();
     //   model.put("template", "templates/index.vtl");
     //   return new ModelAndView(model, layout);
     // }, new VelocityTemplateEngine());
     //
     // get("/", (request, response) -> {
-    //   Map<String, Object> = new HashMap<>();
+    //   Map<String, Object> model = new HashMap<>();
     //   model.put("template", "templates/index.vtl");
     //   return new ModelAndView(model, layout);
     // }, new VelocityTemplateEngine());
     //
     // get("/", (request, response) -> {
-    //   Map<String, Object> = new HashMap<>();
+    //   Map<String, Object> model = new HashMap<>();
     //   model.put("template", "templates/index.vtl");
     //   return new ModelAndView(model, layout);
     // }, new VelocityTemplateEngine());

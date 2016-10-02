@@ -11,8 +11,8 @@ public class RangerTest {
 
   @Before
   public void initialize() {
-    firstRanger = new Ranger("Sandro", 1, "12345", "sandro@sandro.com");
-    secondRanger = new Ranger("Satchel", 2, "qwerty", "satchel@satchel.com");
+    firstRanger = new Ranger("Sandro", "12345", "sandro@sandro.com");
+    secondRanger = new Ranger("Satchel", "qwerty", "satchel@satchel.com");
   }
 
   @Rule
@@ -26,11 +26,6 @@ public class RangerTest {
   @Test
   public void getName_returnsName_String() {
     assertEquals("Sandro", firstRanger.getName());
-  }
-
-  @Test
-  public void getBadgeNumber_returnsBadgeNumber_int() {
-    assertEquals(1, firstRanger.getBadgeNumber());
   }
 
   @Test
@@ -85,7 +80,7 @@ public class RangerTest {
 
   @Test
   public void equals_returnsTrueIfNamesAreTheSame() {
-    Ranger myRanger = new Ranger("Sandro", 1, "12345", "sandro@sandro.com");
+    Ranger myRanger = new Ranger("Sandro", "12345", "sandro@sandro.com");
     assertTrue(firstRanger.equals(myRanger));
   }
 
