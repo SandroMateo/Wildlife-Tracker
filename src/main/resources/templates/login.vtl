@@ -1,7 +1,7 @@
 <form action="/login" method="post">
   <div class="form-group">
     #if($loggedIn == false)
-      <p>Invalid login info</p>
+      <p class="invalid">Invalid login info</p>
     #end
     <label for="badgeNumber">Badge Number</label>
     <input type="number" name="badgeNumber" class="form-control" placeholder="badge #" required>

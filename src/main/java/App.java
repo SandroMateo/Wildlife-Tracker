@@ -73,19 +73,30 @@ public class App {
       }
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
-    //
-    // get("/", (request, response) -> {
-    //   Map<String, Object> model = new HashMap<>();
-    //   model.put("template", "templates/index.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // get("/", (request, response) -> {
-    //   Map<String, Object> model = new HashMap<>();
-    //   model.put("template", "templates/index.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
+
+    get("/ranger/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      model.put("template", "templates/new-ranger.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/ranger/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      String name = request.queryParams("name");
+      String password = request.queryParams("password");
+      String checkPassword = request.queryParams("checkPassword");
+      String contact = request.queryParams("contact");
+      if (password.equals(checkPassword)) {
+        Ranger newRanger = new Ranger(name, password, contact);
+        model.put("ranger", newRanger);
+        model.put("template", "templates/ranger.vtl");
+      } else {
+        model.put("created", false);
+        model.put("template", "templates/new-ranger.vtl");
+      }
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
     // get("/", (request, response) -> {
     //   Map<String, Object> model = new HashMap<>();
     //   model.put("template", "templates/index.vtl");
