@@ -88,7 +88,14 @@ public class App {
       String contact = request.queryParams("contact");
       if (password.equals(checkPassword)) {
         Ranger newRanger = new Ranger(name, password, contact);
+        newRanger.save();
         model.put("ranger", newRanger);
+        model.put("animals", Animal.allAnimals());
+        model.put("EndangeredAnimal", EndangeredAnimal.all());
+        model.put("zoneA", Sighting.LOCATION_ZONEA);
+        model.put("ne", Sighting.LOCATION_NE);
+        model.put("river", Sighting.LOCATION_RIVER);
+        model.put("loggedIn", Ranger.isLoggedIn());
         model.put("template", "templates/ranger.vtl");
       } else {
         model.put("created", false);
