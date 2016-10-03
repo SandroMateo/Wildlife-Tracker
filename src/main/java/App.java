@@ -117,8 +117,7 @@ public class App {
       boolean isEndangered = Boolean.parseBoolean(request.queryParams("endangered"));
       request.session().attribute("name", name);
       request.session().attribute("description", description);
-      request.session().attribute("isEndangered", isEndangered);
-      if (isEndangered) {
+      if (isEndangered == true) {
         model.put("endangered", true);
         model.put("healthy", EndangeredAnimal.HEALTH_HEALTHY);
         model.put("okay", EndangeredAnimal.HEALTH_OKAY);
@@ -136,12 +135,12 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post("/animal/sighting/new", (request, response) -> {
+    post("/animal/new/sighting", (request, response) -> {
       Map<String, Object> model = new HashMap<>();
       String name = request.session().attribute("name");
       String description = request.session().attribute("description");
       int animalId = 0;
-      if (Boolean.parseBoolean(request.session().attribute("isEndangered"))) {
+      if (request.session().attribute("isEndangered") == true) {
         String health = request.queryParams("health");
         String age = request.queryParams("age");
         EndangeredAnimal endangeredAnimal = new EndangeredAnimal(name, description, health, age);
@@ -172,6 +171,20 @@ public class App {
         model.put("animal", animal);
       }
       model.put("template", "templates/animal.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/ranger/:id", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      Ranger ranger = Ranger.find(Integer.parseInt(request.params("id")));
+      model.put("ranger", ranger);
+      model.put("animals", Animal.allAnimals());
+      model.put("EndangeredAnimal", EndangeredAnimal.all());
+      model.put("zoneA", Sighting.LOCATION_ZONEA);
+      model.put("ne", Sighting.LOCATION_NE);
+      model.put("river", Sighting.LOCATION_RIVER);
+      model.put("loggedIn", Ranger.isLoggedIn());
+      model.put("template", "templates/ranger.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
