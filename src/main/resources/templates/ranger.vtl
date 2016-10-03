@@ -22,7 +22,7 @@
   </ul>
 #end
 
-#if($loggedIn)
+#if($loggedIn && !$animals.isEmpty())
   <h3>Report Sighting:</h3>
   <div class="form-group">
     <form action="/sighting/new" method="post">
