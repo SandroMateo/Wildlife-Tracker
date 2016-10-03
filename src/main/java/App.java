@@ -104,22 +104,24 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/animal/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      model.put("template", "templates/new-animal.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
     get("/animal/:id", (request, response) -> {
       Map<String, Object> model = new HashMap<>();
       if(Animal.findAnimals(Integer.parseInt(request.params("id"))) == null) {
-        EndangeredAnimal endangered = EndangeredAnimal.find(Integer.parseInt(request.params("id")));
+        EndangeredAnimal animal = EndangeredAnimal.find(Integer.parseInt(request.params("id")));
       } else {
         Animal animal = Animal.findAnimals(Integer.parseInt(request.params("id")));
       }
+      model.put("animal", animal);
       model.put("template", "templates/animal.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
-    //
-    // get("/", (request, response) -> {
-    //   Map<String, Object> model = new HashMap<>();
-    //   model.put("template", "templates/index.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
+
     //
     // get("/", (request, response) -> {
     //   Map<String, Object> model = new HashMap<>();

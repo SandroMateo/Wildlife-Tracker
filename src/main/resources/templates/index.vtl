@@ -34,7 +34,9 @@
         </ul>
       #end
     #else
-      <h4><a href="/animal/new">Report New Animal</a></h4>
+      #if($loggedIn)
+        <h4><a href="/animal/new">Report New Animal</a></h4>
+      #end
     #end
   </div>
 <div>
