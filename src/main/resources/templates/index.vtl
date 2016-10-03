@@ -29,7 +29,7 @@
         <h3>Endangered:</h3>
         <ul>
           #foreach($endangeredAnimal in $endangeredAnimals)
-            <li><a href="/animal/endangered/$endangeredAnimal.getId()">$endangeredAnimal.getName()</a></li>
+            <li><a href="/animal/$endangeredAnimal.getId()">$endangeredAnimal.getName()</a></li>
           #end
         </ul>
       #end

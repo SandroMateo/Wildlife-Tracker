@@ -1,0 +1,9 @@
+<h1>$animal.getName()</h1>
+<h3>$animal.getDescription()</h3>
+<h2>Sightings</h2>
+<ul>
+  #foreach($sighting in $animal.getSightings())
+    <li>$sighting.getDate(), Ranger Badge #: <a href="/ranger/$sighting.getRangerId()">$sighting.getRangerId()</a></li>
+    <p><strong>Location</strong>: $sighting.getLocation()</p>
+  #end
+</ul>
