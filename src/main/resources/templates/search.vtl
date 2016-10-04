@@ -1,0 +1,16 @@
+<h1>Here's What We Found:</h1>
+#if(!$rangers.isEmpty())
+  <ul>
+    #foreach($ranger in $rangers)
+      <li><a href="/ranger/$ranger.getId()">$ranger.getName()</a></li>
+    #end
+  </ul>
+#elseif(!$animals.isEmpty())
+  <ul>
+    #foreach($animal in $animals)
+      <li><a href="/animal/$animal.getId()">$animal.getName()</a></li>
+    #end
+  </ul>
+#else
+  <h2>Sorry! No matches found!</h2>
+#end

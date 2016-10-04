@@ -77,7 +77,7 @@ public class Animal {
 
   public static List<Animal> allAnimals() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM animals WHERE health NOT IN ('healthy', 'okay', 'ill')";
+      String sql = "SELECT * FROM animals WHERE health IS NULL";
       return con.createQuery(sql)
         .throwOnMappingFailure(false)
         .executeAndFetch(Animal.class);
@@ -86,7 +86,7 @@ public class Animal {
 
   public static Animal findAnimals(int id) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM animals WHERE id = :id";
+      String sql = "SELECT * FROM animals WHERE id = :id AND health IS NULL";
       return con.createQuery(sql)
         .throwOnMappingFailure(false)
         .addParameter("id", id)
@@ -96,7 +96,7 @@ public class Animal {
 
   public static List<Animal> searchAnimals(String name) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM animals WHERE name LIKE :name";
+      String sql = "SELECT * FROM animals WHERE name LIKE :name AND health IS NULL";
       return con.createQuery(sql)
         .addParameter("name", (name + "%"))
         .executeAndFetch(Animal.class);

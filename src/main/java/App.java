@@ -21,6 +21,21 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    post("/search", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      String type = request.queryParams("type");
+      String search = request.queryParams("name");
+      if (type.equals("Ranger")) {
+        model.put("rangers", Ranger.search(search));
+      } else if(!Animal.searchAnimals(search).isEmpty()) {
+        model.put("animals", Animal.searchAnimals(search));
+      } else {
+        model.put("animals", EndangeredAnimal.search(search));
+      }
+      model.put("template", "templates/search.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
     get("/login", (request, response) -> {
       Map<String, Object> model = new HashMap<>();
       model.put("template", "templates/login.vtl");
@@ -113,7 +128,7 @@ public class App {
       String health = request.queryParams("health");
       String age = request.queryParams("age");
       int animalId = 0;
-      if (health.length() > 0 && age.length() > 0) {
+      if (health != null && age != null) {
         EndangeredAnimal endangeredAnimal = new EndangeredAnimal(name, description, health, age);
         endangeredAnimal.save();
         animalId = endangeredAnimal.getId();

@@ -66,7 +66,7 @@ public class EndangeredAnimal extends Animal {
 
   public static List<EndangeredAnimal> all() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM animals";
+      String sql = "SELECT * FROM animals WHERE health IN ('healthy', 'okay', 'ill')";
       return con.createQuery(sql)
         .executeAndFetch(EndangeredAnimal.class);
     }
@@ -74,7 +74,7 @@ public class EndangeredAnimal extends Animal {
 
   public static EndangeredAnimal find(int id) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM animals WHERE id = :id";
+      String sql = "SELECT * FROM animals WHERE id = :id AND health IN ('healthy', 'okay', 'ill')";
       return con.createQuery(sql)
         .throwOnMappingFailure(false)
         .addParameter("id", id)
@@ -84,7 +84,7 @@ public class EndangeredAnimal extends Animal {
 
   public static List<EndangeredAnimal> search(String name) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM animals WHERE name LIKE :name";
+      String sql = "SELECT * FROM animals WHERE name LIKE :name AND health IN ('healthy', 'okay', 'ill')";
       return con.createQuery(sql)
         .addParameter("name", (name + "%"))
         .executeAndFetch(EndangeredAnimal.class);
