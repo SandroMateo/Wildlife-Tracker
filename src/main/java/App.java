@@ -25,12 +25,11 @@ public class App {
       Map<String, Object> model = new HashMap<>();
       String type = request.queryParams("type");
       String search = request.queryParams("name");
-      if (type.equals("Ranger")) {
-        model.put("rangers", Ranger.search(search));
-      } else if(!Animal.searchAnimals(search).isEmpty()) {
+      if (type.equals("Animal")) {
         model.put("animals", Animal.searchAnimals(search));
+        model.put("endangeredAnimals", EndangeredAnimal.search(search));
       } else {
-        model.put("animals", EndangeredAnimal.search(search));
+        model.put("rangers", Ranger.search(search));
       }
       model.put("template", "templates/search.vtl");
       return new ModelAndView(model, layout);
@@ -83,6 +82,7 @@ public class App {
         model.put("river", Sighting.LOCATION_RIVER);
         model.put("loggedIn", Ranger.isLoggedIn());
         model.put("template", "templates/ranger.vtl");
+        request.session().attribute("rangerId", newRanger.getId());
       } else {
         model.put("created", false);
         model.put("template", "templates/new-ranger.vtl");

@@ -1,0 +1,46 @@
+<h1>$ranger.getName()</h1>
+<h2>Badge #: $ranger.getId()</h2>
+<div class="row">
+  <div class="col-sm-6">
+    <h3>Animal Sightings:</h3>
+    #if($ranger.getSightings().isEmpty())
+      <h4>No animal sightings yet.</h4>
+    #else
+      <ul>
+        #foreach($sighting in $ranger.getSightings())
+          #foreach($animal in $animals)
+            #if($sighting.getAnimalId() == $animal.getId())
+              <li><a href="/animal/$animal.getId()">$animal.getName(), $sighting.getDate()</a></li>
+            #end
+          #end
+          #foreach($endangeredAnimal in $endangeredAnimals)
+            #if($sighting.getAnimalId() == $endangeredAnimal.getId())
+              <li><span class="invalid">Endangered: </span><a href="/animal/$endangeredAnimal.getId()">$endangeredAnimal.getName(), $sighting.getDate()</a></li>
+            #end
+          #end
+        #end
+      </ul>
+    #end
+  </div>
+  <div class="col-sm-6">
+    <h2>All Animals:</h2>
+    #if(!$animals.isEmpty())
+      <ul>
+        #foreach($animal in $animals)
+          <li><a href="/animal/$animal.getId()">$animal.getName()</a></li>
+        #end
+      </ul>
+    #end
+    #if(!$endangeredAnimals.isEmpty())
+      <h4>Endangered:</h4>
+      <ul>
+        #foreach($endangeredAnimal in $endangeredAnimals)
+          <li><a href="/animal/$endangeredAnimal.getId()">$endangeredAnimal.getName()</a></li>
+        #end
+      </ul>
+    #end
+    #if($loggedIn)
+      <h4><a href="/animal/new">Report New Animal</a></h4>
+    #end
+  </div>
+</div>
