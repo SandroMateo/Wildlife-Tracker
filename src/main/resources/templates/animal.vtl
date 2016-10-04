@@ -1,10 +1,15 @@
 <h1>$animal.getName()</h1>
 <h4>Description</h4>
 <p>$animal.getDescription()</p>
+#if($endangered == true)
+  <h6>THIS ANIMAL IS ENDANGERED</h6>
+  <p>Health: $animal.getHealth()</p>
+  <p>Age: $animal.getAge()</p>
+#end
 <h2>Sightings</h2>
 <ul>
   #foreach($sighting in $animal.getSightings())
-    <li>$sighting.getDate(), Ranger Badge #: <a href="/ranger/$sighting.getRangerId()">$sighting.getRangerId()</a></li>
+    <li>Date: $sighting.getDate(), Ranger Badge # <a href="/ranger/$sighting.getRangerId()">$sighting.getRangerId()</a></li>
     <p><strong>Location</strong>: $sighting.getLocation()</p>
   #end
 </ul>

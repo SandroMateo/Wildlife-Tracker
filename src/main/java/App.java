@@ -147,6 +147,7 @@ public class App {
         animal.save();
         animalId = animal.getId();
         model.put("animal", animal);
+        model.put("endangered", true);
       }
       if (location.equals("1")) {
         location = Sighting.LOCATION_ZONEA;
@@ -167,6 +168,7 @@ public class App {
       if(Animal.findAnimals(Integer.parseInt(request.params("id"))) == null) {
         EndangeredAnimal endangeredAnimal = EndangeredAnimal.find(Integer.parseInt(request.params("id")));
         model.put("animal", endangeredAnimal);
+        model.put("endangered", true);
       } else {
         Animal animal = Animal.findAnimals(Integer.parseInt(request.params("id")));
         model.put("animal", animal);
@@ -189,6 +191,7 @@ public class App {
       if(Animal.findAnimals(animalId) == null) {
         EndangeredAnimal endangeredAnimal = EndangeredAnimal.find(animalId);
         model.put("animal", endangeredAnimal);
+        model.put("endangered", true);
       } else {
         Animal animal = Animal.findAnimals(animalId);
         model.put("animal", animal);
