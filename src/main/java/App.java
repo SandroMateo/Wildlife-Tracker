@@ -15,32 +15,6 @@ public class App {
       Map<String, Object> model = new HashMap<>();
       model.put("rangers", Ranger.all());
       model.put("animals", Animal.allAnimals());
-      model.put("zoneA", Sighting.LOCATION_ZONEA);
-      model.put("ne", Sighting.LOCATION_NE);
-      model.put("river", Sighting.LOCATION_RIVER);
-      model.put("loggedIn", Ranger.isLoggedIn());
-      model.put("endangeredAnimals", EndangeredAnimal.all());
-      model.put("template", "templates/index.vtl");
-      return new ModelAndView(model, layout);
-    }, new VelocityTemplateEngine());
-
-    post("/sighting/new", (request, response) -> {
-      Map<String, Object> model = new HashMap<>();
-      int animalId = 0;
-      if(Integer.parseInt(request.queryParams("animalId")) > 0) {
-        animalId = Integer.parseInt(request.queryParams("animalId"));
-      } else {
-        animalId = Integer.parseInt(request.queryParams("endangeredAnimalId"));
-      }
-      int rangerId = request.session().attribute("rangerId");
-      String location = request.queryParams("location");
-      Sighting newSighting = new Sighting(location, rangerId, animalId);
-      newSighting.save();
-      model.put("rangers", Ranger.all());
-      model.put("animals", Animal.allAnimals());
-      model.put("zoneA", Sighting.LOCATION_ZONEA);
-      model.put("ne", Sighting.LOCATION_NE);
-      model.put("river", Sighting.LOCATION_RIVER);
       model.put("loggedIn", Ranger.isLoggedIn());
       model.put("endangeredAnimals", EndangeredAnimal.all());
       model.put("template", "templates/index.vtl");
@@ -61,9 +35,6 @@ public class App {
         request.session().attribute("rangerId", Ranger.login(badgeNumber, password).getId());
         model.put("rangers", Ranger.all());
         model.put("animals", Animal.allAnimals());
-        model.put("zoneA", Sighting.LOCATION_ZONEA);
-        model.put("ne", Sighting.LOCATION_NE);
-        model.put("river", Sighting.LOCATION_RIVER);
         model.put("loggedIn", Ranger.isLoggedIn());
         model.put("endangeredAnimals", EndangeredAnimal.all());
         model.put("template", "templates/index.vtl");
@@ -139,10 +110,10 @@ public class App {
       Map<String, Object> model = new HashMap<>();
       String name = request.session().attribute("name");
       String description = request.session().attribute("description");
+      String health = request.queryParams("health");
+      String age = request.queryParams("age");
       int animalId = 0;
-      if (request.session().attribute("isEndangered") == true) {
-        String health = request.queryParams("health");
-        String age = request.queryParams("age");
+      if (health.length() > 0 && age.length() > 0) {
         EndangeredAnimal endangeredAnimal = new EndangeredAnimal(name, description, health, age);
         endangeredAnimal.save();
         animalId = endangeredAnimal.getId();
@@ -170,6 +141,32 @@ public class App {
         Animal animal = Animal.findAnimals(Integer.parseInt(request.params("id")));
         model.put("animal", animal);
       }
+      model.put("zoneA", Sighting.LOCATION_ZONEA);
+      model.put("ne", Sighting.LOCATION_NE);
+      model.put("river", Sighting.LOCATION_RIVER);
+      model.put("loggedIn", Ranger.isLoggedIn());
+      model.put("template", "templates/animal.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/animal/:id/sighting/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      int animalId = Integer.parseInt(request.params("id"));
+      int rangerId = request.session().attribute("rangerId");
+      String location = request.queryParams("location");
+      Sighting newSighting = new Sighting(location, rangerId, animalId);
+      newSighting.save();
+      if(Animal.findAnimals(animalId) == null) {
+        EndangeredAnimal endangeredAnimal = EndangeredAnimal.find(animalId);
+        model.put("animal", endangeredAnimal);
+      } else {
+        Animal animal = Animal.findAnimals(animalId);
+        model.put("animal", animal);
+      }
+      model.put("rangers", Ranger.all());
+      model.put("animals", Animal.allAnimals());
+      model.put("loggedIn", Ranger.isLoggedIn());
+      model.put("endangeredAnimals", EndangeredAnimal.all());
       model.put("template", "templates/animal.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
@@ -179,7 +176,7 @@ public class App {
       Ranger ranger = Ranger.find(Integer.parseInt(request.params("id")));
       model.put("ranger", ranger);
       model.put("animals", Animal.allAnimals());
-      model.put("EndangeredAnimal", EndangeredAnimal.all());
+      model.put("endangeredAnimals", EndangeredAnimal.all());
       model.put("zoneA", Sighting.LOCATION_ZONEA);
       model.put("ne", Sighting.LOCATION_NE);
       model.put("river", Sighting.LOCATION_RIVER);

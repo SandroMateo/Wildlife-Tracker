@@ -12,17 +12,14 @@
           <li><a href="/animal/$animal.getId()">$animal.getName(), $sighting.getDate()</a></li>
         #end
       #end
-      #if(!$endangeredAnimals.isEmpty())
-        <h4>Endangered Animals:</h4>
-        #foreach($endangeredAnimal in $endangeredAnimals)
-          <li><a href="/animal/$endangeredAnimal.getId()">$endangeredAnimal.getName(), $sighting.getDate()</a></li>
-        #end
+      #foreach($endangeredAnimal in $endangeredAnimals)
+        <li><span class="invalid">Endangered: </span><a href="/animal/$endangeredAnimal.getId()">$endangeredAnimal.getName(), $sighting.getDate()</a></li>
       #end
     #end
   </ul>
 #end
 
-#if($loggedIn && !$animals.isEmpty())
+#if($loggedIn)
   <h3>Report Sighting:</h3>
   <div class="form-group">
     <form action="/sighting/new" method="post">

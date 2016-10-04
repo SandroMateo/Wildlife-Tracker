@@ -31,9 +31,10 @@ public class EndangeredAnimal extends Animal {
   @Override
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO animals (name, health, age) VALUES (:name, :health, :age)";
+      String sql = "INSERT INTO animals (name, desctiption, health, age) VALUES (:name, :description, :health, :age)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("name", this.name)
+        .addParameter("description", this.description)
         .addParameter("health", this.health)
         .addParameter("age", this.age)
         .executeUpdate()
