@@ -105,12 +105,6 @@ public class App {
       request.session().attribute("description", description);
       if (isEndangered == true) {
         model.put("endangered", true);
-        model.put("healthy", EndangeredAnimal.HEALTH_HEALTHY);
-        model.put("okay", EndangeredAnimal.HEALTH_OKAY);
-        model.put("ill", EndangeredAnimal.HEALTH_ILL);
-        model.put("newborn", EndangeredAnimal.AGE_NEWBORN);
-        model.put("young", EndangeredAnimal.AGE_YOUNG);
-        model.put("adult", EndangeredAnimal.AGE_ADULT);
       } else {
         model.put("endangered", false);
       }
@@ -127,19 +121,40 @@ public class App {
       String description = request.session().attribute("description");
       String health = request.queryParams("health");
       String age = request.queryParams("age");
+      String location = request.queryParams("location");
       int animalId = 0;
-      if (health != null && age != null) {
-        EndangeredAnimal endangeredAnimal = new EndangeredAnimal(name, description, health, age);
-        endangeredAnimal.save();
-        animalId = endangeredAnimal.getId();
-        model.put("animal", endangeredAnimal);
-      } else {
+      if (health == null || age == null) {
         Animal animal = new Animal(name, description);
         animal.save();
         animalId = animal.getId();
         model.put("animal", animal);
+      } else {
+        if (health.equals("1")) {
+          health = EndangeredAnimal.HEALTH_HEALTHY;
+        } else if(health.equals("2")) {
+          health = EndangeredAnimal.HEALTH_OKAY;
+        } else {
+          health = EndangeredAnimal.HEALTH_ILL;
+        }
+        if (age.equals("1")) {
+          age = EndangeredAnimal.AGE_NEWBORN;
+        } else if(age.equals("2")) {
+          age = EndangeredAnimal.AGE_YOUNG;
+        } else {
+          age = EndangeredAnimal.AGE_ADULT;
+        }
+        EndangeredAnimal animal = new EndangeredAnimal(name, description, health, age);
+        animal.save();
+        animalId = animal.getId();
+        model.put("animal", animal);
       }
-      String location = request.queryParams("location");
+      if (location.equals("1")) {
+        location = Sighting.LOCATION_ZONEA;
+      } else if(location.equals("2")) {
+        location = Sighting.LOCATION_RIVER;
+      } else {
+        location = Sighting.LOCATION_NE;
+      }
       int rangerId = request.session().attribute("rangerId");
       Sighting newSighting = new Sighting(location, rangerId, animalId);
       newSighting.save();

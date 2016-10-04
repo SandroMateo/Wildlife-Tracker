@@ -27,7 +27,7 @@
       </ul>
     #end
     #if(!$endangeredAnimals.isEmpty())
-      <h3>Endangered:</h3>
+      <h4>Endangered:</h4>
       <ul>
         #foreach($endangeredAnimal in $endangeredAnimals)
           <li><a href="/animal/$endangeredAnimal.getId()">$endangeredAnimal.getName()</a></li>

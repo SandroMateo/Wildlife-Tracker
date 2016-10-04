@@ -1,11 +1,13 @@
 <h1>Here's What We Found:</h1>
-#if(!$rangers.isEmpty())
+#if($animals.isEmpty())
+  <h4>Rangers:</h4>
   <ul>
     #foreach($ranger in $rangers)
       <li><a href="/ranger/$ranger.getId()">$ranger.getName()</a></li>
     #end
   </ul>
-#elseif(!$animals.isEmpty())
+#elseif($rangers.isEmpty())
+  <h4>Animals:</h4>
   <ul>
     #foreach($animal in $animals)
       <li><a href="/animal/$animal.getId()">$animal.getName()</a></li>
